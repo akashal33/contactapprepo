@@ -20,6 +20,9 @@ public class Contact {
 	@Column(name = "contact_email")
 	private String contactEmail;
 	@Column(name = "contact_number")
-	private String contactNumber;
+	private Long contactNumber;
+	private boolean activeFlag;
+	
+	
 
 }

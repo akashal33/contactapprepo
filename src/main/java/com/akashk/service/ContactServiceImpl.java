@@ -22,10 +22,14 @@ public class ContactServiceImpl implements ContactService {
 
 		
 		String result = null;
-
+		contact.setActiveFlag(true);
+		
 		contact = contactRepo.save(contact);
 		if (contact.getContactId() != null) {
+			
+			
 			result = "contact saved successfully";
+			
 		} else {
 			result = "contact not saved";
 		}
@@ -37,7 +41,8 @@ public class ContactServiceImpl implements ContactService {
 
 		List<Contact> contacts = null;
 
-		contacts = contactRepo.findAll();
+		//contacts = contactRepo.findAll();
+		contacts = contactRepo.findByactiveFlag(true);
 		return contacts;
 	}
 
@@ -45,7 +50,7 @@ public class ContactServiceImpl implements ContactService {
 	public Contact getContactById(int contactId) {
 
 		Optional<Contact> contact = null;
-
+		
 		contact = contactRepo.findById(contactId);
 		return contact.get();
 	}
@@ -71,14 +76,29 @@ public class ContactServiceImpl implements ContactService {
 	public String deleteContact(int contactId) {
 		
 		String result = null;
+		Optional<Contact> contactOp = null;
+		Contact contact = null;
 		
-		if(contactRepo.existsById(contactId)) {
-		contactRepo.deleteById(contactId);
-		result = " contact deleted";
-		}else {
-			result = " contact not found";
-		}
-
+		/*
+		 * if(contactRepo.existsById(contactId)) { contactRepo.deleteById(contactId);
+		 * result = " contact deleted"; }else { result = " contact not found"; }
+		 * 
+		 * return result;
+		 */
+			
+		 contactOp = contactRepo.findById(contactId);
+		 if(contactOp.isPresent()) {
+			 
+			 contact = contactOp.get();
+			 contact.setActiveFlag(false);
+			 contactRepo.save(contact);
+			 result = "contact deleted";
+			 
+		 }
+		 else {
+			 result = " contact not found";
+		 }
+		 
 		return result;
 	}
 

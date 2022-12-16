@@ -15,20 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.akashk.entity.Contact;
 import com.akashk.service.ContactService;
 
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @CrossOrigin
+@Api("This is contact rest controller")
 public class ContactController {
 
 	@Autowired
 	ContactService contactService;
-
-	@GetMapping("/data")
-	public String getData() {
-		return "working...";
-	}
-
+	
+	@ApiOperation("This method used for saveing new contact")
 	@PostMapping("/contact")
 	public String saveContact(@RequestBody Contact contact) {
 
@@ -38,7 +36,8 @@ public class ContactController {
 		return result;
 
 	}
-
+	
+	@ApiOperation("This method used for getting all contacts")
 	@GetMapping("/contacts")
 	public List<Contact> getAllContacts() {
 
@@ -48,7 +47,8 @@ public class ContactController {
 
 		return contacts;
 	}
-
+	
+	@ApiOperation("This method used for getting existing contact by id")
 	@GetMapping("/contact/{contactId}")
 	public Contact getContactById(@PathVariable("contactId") int contactId) {
 
@@ -60,28 +60,25 @@ public class ContactController {
 
 	}
 
+	@ApiOperation("This method used for updating existing contact")
 	@PutMapping("/contact")
 	public String updateContact(@RequestBody Contact contact) {
 
 		String result = null;
-		
+
 		result = contactService.updateContact(contact);
 		return result;
 
 	}
-
+	
+	@ApiOperation("This method used for deleting a contact")
 	@DeleteMapping("/contact/{contactId}")
-	public List<Contact> deleteContact(@PathVariable("contactId") int contactId) {
+	public String deleteContact(@PathVariable("contactId") int contactId) {
 
-		List<Contact> contacts = null;
-		String check = null;
-		check = contactService.deleteContact(contactId);
-		
-		if(check.equals(" contact deleted")) {
-			contacts = getAllContacts();
-		}
-		
-		return contacts;
+		String result = null;
+
+		result = contactService.deleteContact(contactId);
+		return result;
 
 	}
 
